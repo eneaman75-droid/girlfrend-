@@ -26,7 +26,7 @@
 
   <main id="app" class="app" role="main">
 
-    <section class="page page-intro active" data-page="1" aria-label="Intro">
+    <section class="page page-intro active" data-page="1">
       <div class="center-card">
         <h1 class="title">Some things are not meant to be rushed.</h1>
         <p class="subtitle">This is only for you, Beyza.</p>
@@ -34,33 +34,30 @@
       </div>
     </section>
 
-    <section class="page page-game" data-page="2" aria-label="Choose carefully">
+    <section class="page page-game" data-page="2">
       <div class="section-inner">
         <h2 class="small-title">Choose carefully.</h2>
-        <div class="choices" role="list">
 
-          <button class="choice" data-choice="kastravec" role="listitem">
+        <div class="choices">
+          <button class="choice" data-choice="kastravec">
             <div class="emoji">🥒</div>
             <div class="choice-text">Kastravec</div>
           </button>
-
-          <button class="choice correct" data-choice="lopa" role="listitem">
+          <button class="choice correct" data-choice="lopa">
             <div class="emoji">🐄</div>
             <div class="choice-text">Lopa ❤️</div>
           </button>
-
-          <button class="choice" data-choice="zemer" role="listitem">
+          <button class="choice" data-choice="zemer">
             <div class="emoji">💚</div>
             <div class="choice-text">Zemer</div>
           </button>
-
         </div>
 
-        <div class="game-feedback" id="gameFeedback" aria-live="polite"></div>
+        <div class="game-feedback" id="gameFeedback"></div>
       </div>
     </section>
 
-    <section class="page page-letter" data-page="3" aria-label="Personal message">
+    <section class="page page-letter" data-page="3">
       <div class="letter-card">
         <div class="floral top-left"></div>
         <div class="floral bottom-right"></div>
@@ -74,13 +71,12 @@
             I wanted to do something different —
             something that feels like you.
           </p>
-
           <button class="btn btn-outline" id="toBuildUp">One last thing…</button>
         </div>
       </div>
     </section>
 
-    <section class="page page-build" data-page="4" aria-label="Build up">
+    <section class="page page-build" data-page="4">
       <img class="rose-graphic rose-build" alt="" aria-hidden="true"
            src="https://images.unsplash.com/photo-1508736266287-4b3b70edc6fb?q=80&w=700&auto=format&fit=crop&ixlib=rb-4.0.3&s=8a2f7a4b3b6d4d49b88f6f97f7cbe8b1">
 
@@ -90,9 +86,9 @@
       </div>
     </section>
 
-    <section class="page page-memory" data-page="5" aria-label="Memory">
+    <section class="page page-memory" data-page="5">
 
-      <!-- REMOVED THE UNWANTED IMAGE HERE -->
+      <!-- Unwanted image was removed earlier -->
 
       <div class="memory-card">
         <p class="memory-lines">
@@ -101,7 +97,7 @@
           if you wanted to be my girlfriend?”
         </p>
 
-        <div class="pause-text" id="pauseText" aria-hidden="true">…</div>
+        <div class="pause-text" id="pauseText">…</div>
 
         <p class="memory-conclude hidden" id="memoryConclude">
           “So I thought I should do it properly.”
@@ -111,7 +107,7 @@
       </div>
     </section>
 
-    <section class="page page-question" data-page="6" aria-label="The question">
+    <section class="page page-question" data-page="6">
       <div id="petalLayer"></div>
       <h1 class="huge">Beyza, will you be my girlfriend?</h1>
 
@@ -123,13 +119,21 @@
       <p class="hint small">(You can tap to help if using mobile)</p>
     </section>
 
-    <section class="page page-result" data-page="7" aria-label="Result">
+    <section class="page page-result" data-page="7">
       <div class="result-card" id="resultCard"></div>
     </section>
 
   </main>
 
-  
+  <audio id="bgMusic" loop preload="auto" crossorigin="anonymous"
+         src="https://actions.google.com/sounds/v1/ambiences/soft_piano.ogg"
+         autoplay muted></audio>
+
+  <!-- SOUND BUTTON REMOVED HERE -->
+
+  <audio id="errorSound" preload="auto" src="data:audio/ogg;base64:T2dnUwACAAAAAAAAAABVDQAAAAAAANh4AAAAAAAAAAAAAAAAAAAAAAA/////w=="></audio>
+
+  <script src="script.js" defer></script>
 
 </body>
 </html>
