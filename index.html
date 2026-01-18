@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Beyza — A small question</title>
+
+  <!-- Fonts: Elegant serif for titles, clean sans for body -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Grain overlay -->
+  <div id="grain" aria-hidden="true"></div>
+
+  <!-- Birds (visible, left-to-right looping) -->
+  <div id="birds" aria-hidden="true">
+    <div class="bird" style="--i:0"></div>
+    <div class="bird" style="--i:1"></div>
+    <div class="bird" style="--i:2"></div>
+    <div class="bird" style="--i:3"></div>
+    <div class="bird" style="--i:4"></div>
+  </div>
+
+  <!-- Global overlay for flashes and red overlays -->
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
+
+  <main id="app" class="app" role="main">
+    <!-- Page 1: Intro -->
+    <section class="page page-intro active" data-page="1" aria-label="Intro">
+      <div class="center-card">
+        <h1 class="title">Some things are not meant to be rushed.</h1>
+        <p class="subtitle">This is only for you, Beyza.</p>
+        <button class="btn btn-primary" id="startBtn">Continue</button>
+      </div>
+    </section>
+
+    <!-- Page 2: Interactive Choice Game -->
+    <section class="page page-game" data-page="2" aria-label="Choose carefully">
+      <div class="section-inner">
+        <h2 class="small-title">Choose carefully.</h2>
+        <div class="choices" role="list">
+          <button class="choice" data-choice="kastravec" role="listitem" aria-label="Kastravec">
+            <div class="emoji">🥒</div>
+            <div class="choice-text">Kastravec</div>
+          </button>
+
+          <button class="choice correct" data-choice="lopa" role="listitem" aria-label="Lopa">
+            <div class="emoji">🐄</div>
+            <div class="choice-text">Lopa ❤️</div>
+          </button>
+
+          <button class="choice" data-choice="zemer" role="listitem" aria-label="Zemer">
+            <div class="emoji">💚</div>
+            <div class="choice-text">Zemer</div>
+          </button>
+        </div>
+
+        <div class="game-feedback" id="gameFeedback" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Page 3: Personal Message -->
+    <section class="page page-letter" data-page="3" aria-label="Personal message">
+      <div class="letter-card">
+        <div class="floral top-left" aria-hidden="true"></div>
+        <div class="floral bottom-right" aria-hidden="true"></div>
+        <div class="letter-content">
+          <p class="letter-address">Beyza,</p>
+          <p class="letter-body">
+            You have a way of making everything feel calmer and more beautiful.
+            Every time we talk, my days feel lighter.
+          </p>
+          <p class="letter-body">
+            I wanted to do something different —
+            something that feels like you.
+          </p>
+          <button class="btn btn-outline" id="toBuildUp">One last thing…</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page 4: Build-up (darker, quieter background) -->
+    <section class="page page-build" data-page="4" aria-label="Build up">
+      <!-- bouquet visual (subtle) -->
+      <img class="rose-graphic rose-build" alt="" aria-hidden="true"
+           src="https://images.unsplash.com/photo-1508736266287-4b3b70edc6fb?q=80&w=700&auto=format&fit=crop&ixlib=rb-4.0.3&s=8a2f7a4b3b6d4d49b88f6f97f7cbe8b1">
+      <div class="center-card quiet">
+        <p class="slow-fade lead">There is something I’ve been wanting to ask you…</p>
+        <button class="btn btn-primary" id="toMemory">Continue</button>
+      </div>
+    </section>
+
+    <!-- NEW Page 5: Memory / Context text (references something she said) -->
+    <section class="page page-memory" data-page="5" aria-label="Memory">
+      <!-- bouquet visual -->
+      <img class="rose-graphic rose-memory" alt="" aria-hidden="true"
+           src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?q=80&w=700&auto=format&fit=crop&ixlib=rb-4.0.3&s=cf834be23f3a6b7c2d8e7b2a6bd79f8d">
+      <div class="memory-card">
+        <p class="memory-lines">
+          “Remember when you once said<br>
+          that I never even asked you<br>
+          if you wanted to be my girlfriend?”
+        </p>
+
+        <div class="pause-text" id="pauseText" aria-hidden="true">…</div>
+
+        <p class="memory-conclude hidden" id="memoryConclude">
+          “So I thought I should do it properly.”
+        </p>
+
+        <button class="btn btn-primary hidden" id="toQuestion">Continue</button>
+      </div>
+    </section>
+
+    <!-- Page 6: The Question -->
+    <section class="page page-question" data-page="6" aria-label="The question">
+      <!-- falling petals/rose layer -->
+      <div id="petalLayer" aria-hidden="true"></div>
+      <h1 class="huge">Beyza, will you be my girlfriend?</h1>
+
+      <div class="question-actions">
+        <button class="btn btn-yes" id="yesBtn">💖 Yes</button>
+        <button class="btn btn-no" id="noBtn"><span class="noLabel">🖤 No</span></button>
+      </div>
+      <p class="hint small">(You can tap to help if using mobile)</p>
+    </section>
+
+    <!-- Page 7: Result -->
+    <section class="page page-result" data-page="7" aria-label="Result">
+      <div class="result-card" id="resultCard">
+        <!-- Content will be populated dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Music: autoplay (muted initially to maximize chance of autoplay), low volume, loop -->
+  <!-- NOTE: browsers can block autoplay unmuted; a mute/unmute control is provided. -->
+  <audio id="bgMusic" loop preload="auto" crossorigin="anonymous" src="https://actions.google.com/sounds/v1/ambiences/soft_piano.ogg" autoplay muted></audio>
+
+  <!-- Mute control -->
+  <button id="musicToggle" class="music-toggle" aria-pressed="true" title="Toggle music (play / mute)">🔇</button>
+
+  <!-- Optional error sound (small click) - inline tiny beep using data URI (very short) -->
+  <audio id="errorSound" preload="auto" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAABVDQAAAAAAANh4AAAAAAAAAAAAAAAAAAAAAAA/////w=="></audio>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
