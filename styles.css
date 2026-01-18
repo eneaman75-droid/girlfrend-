@@ -1,0 +1,205 @@
+:root{
+  /* Colors */
+  --navy: #0b1020;
+  --burgundy: #6b0f1a;
+  --dark-red: #5a0e12;
+  --soft-pink: #f7c8d9;
+  --light-pink: #ffdff0;
+  --gold: #c9a24d;
+  --muted-white: #f4f6f8;
+
+  /* Typography */
+  --title-font: "Playfair Display", serif;
+  --body-font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+
+  --card-radius: 14px;
+  --transition: 420ms cubic-bezier(.22,.9,.3,1);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--body-font);
+  background:linear-gradient(180deg, rgba(5,8,15,1) 0%, var(--navy) 100%);
+  color:var(--muted-white);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  min-height:100vh;
+  line-height:1.45;
+  position:relative;
+}
+
+/* subtle grain overlay */
+#grain{
+  position:fixed; inset:0; z-index:1; pointer-events:none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Cfilter id='g'%3E%3CfeTurbulence baseFrequency='0.8' numOctaves='6' stitchTiles='stitch'/%3E%3C/feTurbulence%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.02' fill='%23000'/%3E%3C/svg%3E");
+  mix-blend-mode:overlay;
+}
+
+/* overlay for flashes */
+.overlay{
+  position:fixed; inset:0; z-index:6; pointer-events:none;
+  background:transparent;
+  transition:background 280ms ease;
+}
+
+/* birds */
+#birds{position:fixed; inset:0; z-index:2; pointer-events:none; overflow:hidden}
+.bird{
+  position:absolute;
+  width:72px;height:36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 32'%3E%3Cg fill='%23e9d6c8' opacity='0.18'%3E%3Cpath d='M48 8c0 4-8 8-16 12S8 28 8 20s12-16 24-12 16-4 16 0z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:contain;
+  background-repeat:no-repeat;
+  top: calc(8vh + var(--i) * 10vh);
+  left:-18%;
+  transform:translateX(0);
+  animation:birdFly calc(48s + var(--i) * 12s) linear infinite;
+  opacity:0.95;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+}
+@keyframes birdFly{
+  0%{left:-22%; opacity:0}
+  8%{opacity:1}
+  100%{left:122%; opacity:1}
+}
+
+/* App container */
+.app{position:relative; z-index:3; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:3vh 4vw}
+
+/* Page base */
+.page{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:4vh 6vw; opacity:0; transform:translateY(6vh); transition:opacity var(--transition),transform var(--transition); pointer-events:none}
+.page.active{opacity:1; transform:translateY(0); pointer-events:auto}
+.page .center-card{max-width:900px; width:100%; text-align:center}
+
+/* Intro */
+.title{font-family:var(--title-font); font-size:clamp(1.6rem, 4.4vw, 3.6rem); margin:0 0 0.6rem; color:var(--soft-pink); letter-spacing:0.01em}
+.subtitle{color:rgba(255,255,255,0.85); margin:0 0 1.6rem; font-size:clamp(0.95rem, 2.4vw, 1.2rem)}
+
+/* buttons */
+.btn{cursor:pointer; border:0; padding:0.9rem 1.4rem; border-radius:10px; font-weight:600; transition:transform 200ms ease, box-shadow 200ms ease; font-size:1rem}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:linear-gradient(180deg,var(--burgundy),#4a0810); color:var(--light-pink); box-shadow:0 8px 28px rgba(107,15,26,0.25)}
+.btn-outline{background:transparent; border:1px solid rgba(255,255,255,0.08); color:var(--muted-white)}
+.btn-yes{background:linear-gradient(180deg,#ffdfe9,#ffb6d1); color:#3b0510; border-radius:26px; padding:0.9rem 1.6rem; font-size:1.15rem}
+.btn-no{background:rgba(255,255,255,0.03); color:var(--muted-white); border-radius:26px; padding:0.9rem 1.6rem; font-size:1.15rem; position:relative; overflow:visible}
+
+/* Game choices */
+.section-inner{max-width:1100px; width:100%; text-align:center}
+.small-title{font-family:var(--title-font); font-size:clamp(1.1rem,3vw,1.6rem); color:var(--soft-pink); margin-bottom:1.2rem}
+.choices{display:flex; gap:1rem; justify-content:center; align-items:stretch; flex-wrap:wrap}
+.choice{flex:1 1 160px; max-width:280px; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border-radius:14px; padding:1.2rem; display:flex; flex-direction:column; align-items:center; gap:.5rem; transition:transform var(--transition), box-shadow var(--transition); border:1px solid rgba(255,255,255,0.04)}
+.choice .emoji{font-size:2.2rem}
+.choice .choice-text{font-weight:600; margin-top:4px; color:var(--muted-white)}
+.choice:active{transform:scale(.98)}
+.choice:hover{transform:translateY(-6px); box-shadow:0 18px 40px rgba(2,6,12,0.6);}
+
+/* Game feedback */
+.game-feedback{height:2.2rem; margin-top:1rem; color:var(--soft-pink); font-weight:600; opacity:0.95}
+
+/* Letter card */
+.letter-card{max-width:820px; width:100%; background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border-radius:var(--card-radius); padding:2.4rem; position:relative; box-shadow:0 16px 48px rgba(0,0,0,0.5)}
+.letter-content{max-width:720px; margin:0 auto; color:var(--muted-white)}
+.flower{display:none}
+.letter-address{font-family:var(--title-font); font-size:1.25rem; margin:0 0 .8rem; color:var(--soft-pink)}
+.letter-body{margin:0 0 0.9rem; color:rgba(255,255,255,0.9)}
+
+/* floral assets with CSS */
+.floral{
+  position:absolute; width:140px; height:140px; background-image:radial-gradient(circle at 30% 30%, rgba(247,200,217,0.95), rgba(255,255,255,0.02));
+  border-radius:50%; filter:blur(6px); opacity:0.95;
+}
+.top-left{left:-36px; top:-36px; transform:rotate(-18deg); box-shadow:0 10px 40px rgba(0,0,0,0.35)}
+.bottom-right{right:-36px; bottom:-36px; transform:rotate(8deg)}
+
+/* Build-up slow fade */
+.quiet .lead{font-size:1.1rem; opacity:0; animation:slowFadeIn 1300ms forwards 600ms}
+@keyframes slowFadeIn{to{opacity:1}}
+
+/* Memory card */
+.memory-card{max-width:820px; width:100%; text-align:center; padding:1.6rem; background:rgba(255,255,255,0.02); border-radius:12px; position:relative}
+.memory-lines{font-family:var(--title-font); color:var(--soft-pink); font-size:clamp(1rem,4vw,1.6rem); margin:0 0 1rem}
+.pause-text{font-size:2rem; color:rgba(255,255,255,0.25); margin:0.4rem 0}
+.memory-conclude{font-size:1.05rem; margin-top:1rem; color:var(--muted-white)}
+
+/* Rose graphics */
+.rose-graphic{position:absolute; z-index:0; max-width:220px; opacity:0.95; filter:drop-shadow(0 12px 30px rgba(0,0,0,0.55)); pointer-events:none}
+.rose-build{right:10px; top:8px; transform:translateY(-6%); opacity:0.95}
+.rose-memory{left:10px; bottom:12px; transform:translateY(6%); opacity:0.96}
+.rose-yes{position:absolute; right:8px; bottom:8px; max-width:260px; pointer-events:none; opacity:0.98}
+
+/* Question stage */
+.question-stage{width:100%; max-width:980px; text-align:center; padding:2rem; position:relative}
+.huge{font-family:var(--title-font); font-size:clamp(1.6rem,6.2vw,4rem); color:var(--soft-pink); margin:0 0 1.4rem}
+.question-actions{display:flex; gap:1rem; justify-content:center; align-items:center; flex-wrap:wrap}
+
+/* Petal layer (empty by default, petals created by JS) */
+#petalLayer{position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden}
+
+/* Result card */
+.result-card{max-width:900px; width:100%; border-radius:12px; padding:2rem; text-align:center}
+
+/* Result variants */
+.result-card.yes{background:linear-gradient(180deg,#fff6fb,#ffeef8); color:#3b0510}
+.result-card.no{background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted-white)}
+
+/* small text */
+.small{font-size:.9rem; opacity:.9; color:rgba(255,255,255,0.85)}
+
+/* Shake animation helper */
+.shake{
+  animation:shakeX 420ms cubic-bezier(.36,.07,.19,.97);
+}
+@keyframes shakeX{
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(6px); }
+  30%, 50%, 70% { transform: translateX(-8px); }
+  40%, 60% { transform: translateX(8px); }
+  100% { transform: translateX(0); }
+}
+
+/* Flash red animation */
+.flash-red{background:linear-gradient(180deg, rgba(107,15,26,0.85), rgba(107,15,26,0.85)); transition:background 200ms}
+
+/* Heart mini-game */
+.heart-stage {
+  position:fixed; inset:0; z-index:12; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg, rgba(6,6,10,0.95), rgba(6,6,10,0.92));
+  pointer-events:auto;
+  flex-direction:column;
+}
+.heart-large{font-size:clamp(4rem, 18vw, 12rem); transition:transform 220ms ease; will-change:transform; cursor:pointer; user-select:none}
+.heart-pulse{animation:heartPulse 420ms ease both}
+@keyframes heartPulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+
+/* exploding hearts/petals */
+.particle{position:absolute; width:18px; height:18px; pointer-events:none; border-radius:50%; transform-origin:center; opacity:1;}
+
+/* Mute button */
+.music-toggle{
+  position:fixed; z-index:20; right:14px; bottom:14px; border-radius:12px; padding:0.6rem; border:0; background:rgba(255,255,255,0.04); color:var(--muted-white); cursor:pointer;
+}
+
+/* responsive */
+@media (max-width:760px){
+  .choices{gap:.6rem}
+  .choice{flex-basis:48%}
+  .title{font-size:clamp(1.2rem,5.6vw,2.4rem)}
+  .huge{font-size:clamp(1.2rem,8vw,2.4rem)}
+  .center-card{padding:1rem}
+  .rose-graphic{max-width:140px}
+}
+
+@media (max-width:420px){
+  .choice{flex-basis:100%}
+  .btn{padding:.8rem 1rem}
+  .question-actions{flex-direction:column}
+}
+
+/* Utility */
+.hidden{display:none}
