@@ -6,34 +6,134 @@
   <title>Beyza — A small question</title>
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
   <div id="grain" aria-hidden="true"></div>
 
-  <main id="container">
-    <section id="card">
-      <p class="title">
-        “Remember when you once said that I never even asked you if you wanted to be my girlfriend?”
-      </p>
-      <p class="subtitle">“So I thought I should do it properly.”</p>
-      <button id="continueBtn" class="btn">Continue</button>
+  <div id="birds" aria-hidden="true">
+    <div class="bird" style="--i:0"></div>
+    <div class="bird" style="--i:1"></div>
+    <div class="bird" style="--i:2"></div>
+    <div class="bird" style="--i:3"></div>
+    <div class="bird" style="--i:4"></div>
+  </div>
+
+  <div id="overlay" class="overlay" aria-hidden="true"></div>
+
+  <main id="app" class="app" role="main">
+
+    <section class="page page-intro active" data-page="1" aria-label="Intro">
+      <div class="center-card">
+        <h1 class="title">Some things are not meant to be rushed.</h1>
+        <p class="subtitle">This is only for you, Beyza.</p>
+        <button class="btn btn-primary" id="startBtn">Continue</button>
+      </div>
     </section>
+
+    <section class="page page-game" data-page="2" aria-label="Choose carefully">
+      <div class="section-inner">
+        <h2 class="small-title">Choose carefully.</h2>
+        <div class="choices" role="list">
+
+          <button class="choice" data-choice="kastravec" role="listitem">
+            <div class="emoji">🥒</div>
+            <div class="choice-text">Kastravec</div>
+          </button>
+
+          <button class="choice correct" data-choice="lopa" role="listitem">
+            <div class="emoji">🐄</div>
+            <div class="choice-text">Lopa ❤️</div>
+          </button>
+
+          <button class="choice" data-choice="zemer" role="listitem">
+            <div class="emoji">💚</div>
+            <div class="choice-text">Zemer</div>
+          </button>
+
+        </div>
+
+        <div class="game-feedback" id="gameFeedback" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="page page-letter" data-page="3" aria-label="Personal message">
+      <div class="letter-card">
+        <div class="floral top-left"></div>
+        <div class="floral bottom-right"></div>
+        <div class="letter-content">
+          <p class="letter-address">Beyza,</p>
+          <p class="letter-body">
+            You have a way of making everything feel calmer and more beautiful.
+            Every time we talk, my days feel lighter.
+          </p>
+          <p class="letter-body">
+            I wanted to do something different —
+            something that feels like you.
+          </p>
+
+          <button class="btn btn-outline" id="toBuildUp">One last thing…</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-build" data-page="4" aria-label="Build up">
+      <img class="rose-graphic rose-build" alt="" aria-hidden="true"
+           src="https://images.unsplash.com/photo-1508736266287-4b3b70edc6fb?q=80&w=700&auto=format&fit=crop&ixlib=rb-4.0.3&s=8a2f7a4b3b6d4d49b88f6f97f7cbe8b1">
+
+      <div class="center-card quiet">
+        <p class="slow-fade lead">There is something I’ve been wanting to ask you…</p>
+        <button class="btn btn-primary" id="toMemory">Continue</button>
+      </div>
+    </section>
+
+    <section class="page page-memory" data-page="5" aria-label="Memory">
+
+      <!-- REMOVED THE UNWANTED IMAGE HERE -->
+
+      <div class="memory-card">
+        <p class="memory-lines">
+          “Remember when you once said<br>
+          that I never even asked you<br>
+          if you wanted to be my girlfriend?”
+        </p>
+
+        <div class="pause-text" id="pauseText" aria-hidden="true">…</div>
+
+        <p class="memory-conclude hidden" id="memoryConclude">
+          “So I thought I should do it properly.”
+        </p>
+
+        <button class="btn btn-primary hidden" id="toQuestion">Continue</button>
+      </div>
+    </section>
+
+    <section class="page page-question" data-page="6" aria-label="The question">
+      <div id="petalLayer"></div>
+      <h1 class="huge">Beyza, will you be my girlfriend?</h1>
+
+      <div class="question-actions">
+        <button class="btn btn-yes" id="yesBtn">💖 Yes</button>
+        <button class="btn btn-no" id="noBtn"><span class="noLabel">🖤 No</span></button>
+      </div>
+
+      <p class="hint small">(You can tap to help if using mobile)</p>
+    </section>
+
+    <section class="page page-result" data-page="7" aria-label="Result">
+      <div class="result-card" id="resultCard"></div>
+    </section>
+
   </main>
 
-  <!-- Removed bottom-left image here -->
+  <audio id="bgMusic" loop preload="auto" crossorigin="anonymous" src="https://actions.google.com/sounds/v1/ambiences/soft_piano.ogg" autoplay muted></audio>
 
-  <audio id="bgMusic" loop preload="auto" autoplay muted>
-    <source src="https://actions.google.com/sounds/v1/ambiences/soft_piano.ogg" type="audio/ogg">
-  </audio>
+  <button id="musicToggle" class="music-toggle" aria-pressed="true">🔇</button>
 
-  <button id="musicToggle" class="music-toggle" aria-pressed="true" title="Toggle music (play / mute)">🔇</button>
-
-  <audio id="errorSound" preload="auto" src="data:audio/ogg;base64,T2dnUwACAAAAAAAAAAD/////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="></audio>
+  <audio id="errorSound" preload="auto" src="data:audio/ogg;base64:T2dnUwACAAAAAAAAAABVDQAAAAAAANh4AAAAAAAAAAAAAAAAAAAAAAA/////w=="></audio>
 
   <script src="script.js" defer></script>
 
